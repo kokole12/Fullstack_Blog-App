@@ -8,4 +8,6 @@ router.post('/api/v1/blog/register', registerValidation, validate, AuthControlle
 
 router.post('/api/v1/blog/login', AuthController.login)
 
+router.get('/api/v1/verify/:token', AuthController.verifyAccount)
+
 export default router
