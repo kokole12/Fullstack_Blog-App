@@ -7,7 +7,11 @@ export default class PostController {
   static async getPosts (req, res) {
     const page = parseInt(req.query.page) || 1
     const pageSize = parseInt(req.query.pageSize) || 10
-    const posts = await PostModel.find().skip((page - 1) * pageSize).limit(pageSize).exec()
+    const posts = await PostModel.find()
+      .populate('slug')
+      .populate('author')
+      .skip((page - 1) * pageSize)
+      .limit(pageSize).exec()
     if (posts.length === 0) {
       res.status(200).json({ Message: 'No posts yet' })
       return
@@ -29,17 +33,18 @@ export default class PostController {
       }
 
       const tagObjects = await Promise.all(
-        tags.map(async (tagValue) => {
-          let tag = await tagModel.findOne({ value: tagValue })
+        Array.isArray(tags)
+          ? tags.map(async (tagValue) => {
+            let tag = await tagModel.findOne({ value: tagValue })
 
-          if (!tag) {
-            tag = await tagModel.create({ value: tagValue })
-          }
+            if (!tag) {
+              tag = await tagModel.create({ value: tagValue })
+            }
 
-          return tag._id
-        })
+            return tag._id
+          })
+          : []
       )
-
       const newPost = new PostModel({
         title,
         content,
