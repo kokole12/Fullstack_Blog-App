@@ -2,6 +2,10 @@ import userModel from "../models/userModel.js";
 import verifyPassword from "../utils/verifyPassword.js"
 import crypto from 'crypto'
 import transportor from "../utils/sendEmail.js";
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export default class AuthController {
     static async register(req, res) {
@@ -31,7 +35,7 @@ export default class AuthController {
             html: `<h1>Click on the link ${verification_link}
             to activate your account</h1>`
         }
-        await transportor.sendMail(mailOptions)
+        //await transportor.sendMail(mailOptions)
         const new_user = await userModel.create({email, username, password, verificationToken: JSON.stringify(verificationToken)})
 
         res.status(201).json(new_user)
@@ -40,7 +44,8 @@ export default class AuthController {
     static async login(req, res) {
         const {username, password} = req.body
         
-        const dbUser = await userModel.findOne({username})
+        try {
+            const dbUser = await userModel.findOne({username})
 
         if (!dbUser) {
             res.status(401).json({error: 'invalid credentials'})
@@ -54,7 +59,19 @@ export default class AuthController {
             return
         }
 
-        res.status(200).json({Message: 'success', token: 'token'})
+        const payload = {
+            userId: dbUser._id,
+            username: dbUser.username
+        }
+        const token  = jwt.sign(
+            payload,
+            process.env.SECRET,
+            {expiresIn: process.env.EXPIRES})
+        res.status(200).json({Message: 'success', token: token, type: 'Bearer'})
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({error: 'invalid login'})
+        }
 
     }
 
