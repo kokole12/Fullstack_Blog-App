@@ -1,6 +1,4 @@
 import userModel from "../models/userModel.js";
-import {check, validationResult} from 'express-validator'
-import bcrypt from 'bcryptjs'
 import verifyPassword from "../utils/verifyPassword.js"
 import crypto from 'crypto'
 import transportor from "../utils/sendEmail.js";
