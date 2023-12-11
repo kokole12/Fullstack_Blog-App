@@ -61,12 +61,61 @@ export default class PostController {
     }
   }
 
-  static async update (req, res) {
+  static async updatePost (req, res) {
+    const userId = req.user.userId
+    const postId = req.params.id
 
+    const { title, content, tags } = req.body
+
+    try {
+      const post = await PostModel.findOne({ _id: postId })
+
+      if (!post) {
+        res.status(404).json({ error: 'No post found' })
+        return
+      }
+
+      if (post.author !== userId) {
+        res.status(401).json({ error: 'You can\'t perform this action' })
+        return
+      }
+
+      const updatedPost = await PostModel.findByIdAndUpdate(
+        postId,
+        { $set: { title, content, tags } },
+        { new: true }
+      )
+
+      res.json({ Message: 'Success', updatedPost })
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({ error: 'Internal Server Error' })
+    }
   }
 
   static async deletePost (req, res) {
+    const userId = req.user.userId
+    const postId = req.params.id
 
+    try {
+      const post = await PostModel.findOne({ _id: postId })
+
+      if (!post) {
+        res.status(404).json({ error: 'No post found' })
+        return
+      }
+
+      if (post.author !== userId) {
+        res.status(401).json({ error: 'You can\'t perform this action' })
+        return
+      }
+
+      await PostModel.deleteOne({ _id: postId })
+      res.status(204).json({ Message: 'Success' })
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({ error: 'Internal Server Error' })
+    }
   }
 
   static async search (req, res) {
