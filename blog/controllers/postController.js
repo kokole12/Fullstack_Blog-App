@@ -25,6 +25,8 @@ export default class PostController {
 
     const slugValue = slugify(title, { lower: true })
 
+    const imageFilename = req.file ? req.file.filename : null
+
     try {
       let slug = await slugModel.findOne({ value: slugValue })
 
@@ -50,7 +52,8 @@ export default class PostController {
         content,
         slug: slug._id,
         tags: tagObjects,
-        author: req.user.userId
+        author: req.user.userId,
+        imageUrl: imageFilename
       })
 
       await newPost.save()
