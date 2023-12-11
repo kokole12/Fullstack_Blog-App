@@ -18,4 +18,6 @@ router.post('/api/v1/blog/posts', authenticate, postCreateValidation, validate, 
 
 router.delete('/api/v1/blog/posts/:id', authenticate, PostController.deletePost)
 
+router.put('/api/v1/blog/posts/:id', authenticate, PostController.updatePost)
+
 export default router

@@ -75,7 +75,7 @@ export default class PostController {
         return
       }
 
-      if (post.author !== userId) {
+      if (post.author.toString() !== userId) {
         res.status(401).json({ error: 'You can\'t perform this action' })
         return
       }
@@ -104,8 +104,7 @@ export default class PostController {
         res.status(404).json({ error: 'No post found' })
         return
       }
-
-      if (post.author !== userId) {
+      if (post.author.toString() !== userId) {
         res.status(401).json({ error: 'You can\'t perform this action' })
         return
       }
