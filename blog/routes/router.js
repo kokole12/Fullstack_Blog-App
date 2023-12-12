@@ -42,4 +42,10 @@ router.post('/api/v1/blog/posts/:postId/comment', authenticate, PostController.c
 
 router.get('/api/v1/blog/posts/:postId/comments', authenticate, PostController.getPostComments)
 
+router.post('/api/v1/blog/posts/:postId/like', authenticate, PostController.likePost)
+
+router.get('/api/v1/blog/posts/:postId/likes', authenticate, PostController.getPostLikes)
+
+router.delete('/api/v1/blog/posts/:postId/likes', authenticate, PostController.dislikePost)
+
 export default router

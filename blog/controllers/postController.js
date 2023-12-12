@@ -259,4 +259,19 @@ export default class PostController {
       res.status(500).json({ error: 'Internal Server Error' })
     }
   }
+
+  static async getUserLikedPosts (req, res) {
+    const userId = req.params.userId
+
+    try {
+      const userLikes = await Likes.find({ user: userId }).populate('post')
+
+      const likedPosts = userLikes.map((like) => like.post)
+
+      res.json(likedPosts)
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({ error: 'Internal Server Error' })
+    }
+  }
 }
