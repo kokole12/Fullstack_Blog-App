@@ -152,4 +152,21 @@ export default class PostController {
       res.status(500).json({ error: 'Internal Server Error' })
     }
   }
+
+  static async getPostComments (req, res) {
+    const postId = req.params.postId
+
+    try {
+      const post = await PostModel.findById(postId).populate('comments')
+      if (!post) {
+        res.status(404).json({ error: 'No post found' })
+        return
+      }
+
+      res.status(200).json(post.comments)
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ error: 'Internal Server Error' })
+    }
+  }
 }

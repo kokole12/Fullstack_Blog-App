@@ -40,4 +40,6 @@ router.put('/api/v1/blog/posts/:id', authenticate, PostController.updatePost)
 
 router.post('/api/v1/blog/posts/:postId/comment', authenticate, PostController.commentPost)
 
+router.get('/api/v1/blog/posts/:postId/comments', authenticate, PostController.getPostComments)
+
 export default router
