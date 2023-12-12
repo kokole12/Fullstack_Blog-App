@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
+import Profile from './profile.js'
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -23,6 +24,11 @@ const userSchema = new mongoose.Schema({
   },
   verificationToken: {
     type: String
+  },
+
+  profile: {
+    type: Profile.Schema,
+    default: {}
   }
 
 })

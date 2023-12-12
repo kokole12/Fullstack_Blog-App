@@ -3,6 +3,7 @@ import AuthController from '../controllers/AuthController.js'
 import { loginValidation, validate, registerValidation, postCreateValidation } from '../utils/validation.js'
 import PostController from '../controllers/postController.js'
 import authenticate from '../middlewares/authMiddleware.js'
+import UserController from '../controllers/userController.js'
 import multer from 'multer'
 import fs from 'fs'
 
@@ -47,5 +48,7 @@ router.post('/api/v1/blog/posts/:postId/like', authenticate, PostController.like
 router.get('/api/v1/blog/posts/:postId/likes', authenticate, PostController.getPostLikes)
 
 router.delete('/api/v1/blog/posts/:postId/likes', authenticate, PostController.dislikePost)
+
+router.put('/api/v1/blog/users/profile', authenticate, upload.single('image'), UserController.updateUserProfile)
 
 export default router
