@@ -3,14 +3,14 @@ import UserModel from '../models/userModel.js'
 export default class UserController {
   static async updateUserProfile (req, res) {
     const { firstname, lastname, bio } = req.body
-    const { profilePicture } = req.file
+    const profileFilename = req.file ? req.file.filename : null
     const userId = req.user.userId
 
     const updateProfile = {
       firstname,
       lastname,
       bio,
-      profilePicture
+      profileFilename
     }
 
     try {
