@@ -3,6 +3,7 @@ import slugModel from '../models/slugModel.js'
 import tagModel from '../models/tagModel.js'
 import slugify from 'slugify'
 import Comment from '../models/commentsModel.js'
+import Likes from '../models/likesModel.js'
 
 export default class PostController {
   static async getPosts (req, res) {
@@ -166,6 +167,95 @@ export default class PostController {
       res.status(200).json(post.comments)
     } catch (error) {
       console.log(error)
+      res.status(500).json({ error: 'Internal Server Error' })
+    }
+  }
+
+  static async deleteComment (req, res) {
+    const commentId = req.params.commentId
+    const postId = req.params.postId
+
+    try {
+      const post = await PostModel.findById(postId)
+
+      if (!post) {
+        res.status(404).json({ error: 'No post found' })
+        return
+      }
+
+      if (!post.comments.includes(commentId)) {
+        res.status(404).json({ error: 'No post found' })
+        return
+      }
+
+      post.comments = post.comments.filter((comment) => comment.toString() !== commentId)
+
+      await post.save()
+
+      res.status(204).json({ message: 'Comment deleted successfully' })
+
+      await Comment.findByIdAndDelete(commentId)
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ error: 'Internal server error' })
+    }
+  }
+
+  static async likePost (req, res) {
+    const postId = req.params.postId
+    const userId = req.user.userId
+
+    try {
+      const existingLike = await Likes.findOne({ user: userId, post: postId })
+
+      if (existingLike) {
+        res.status(400).json({ error: 'You already liked this post' })
+        return
+      }
+
+      const newLike = new Likes({
+        user: userId,
+        post: postId
+      })
+
+      await newLike.save()
+
+      res.status(201).json({ message: 'Post liked successfully' })
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ error: 'internal server error' })
+    }
+  }
+
+  static async dislikePost (req, res) {
+    const postId = req.params.postId
+    const userId = req.user.userId
+
+    try {
+      const existingLike = await Likes.findOne({ user: userId, post: postId })
+
+      if (!existingLike) {
+        res.status(400).json({ error: 'You have not liked this post' })
+        return
+      }
+
+      await existingLike.remove()
+      res.status(204).json({ message: 'Post unliked successfully' })
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({ error: 'Internal Server Error' })
+    }
+  }
+
+  static async getPostLikes (req, res) {
+    const postId = req.params.postId
+
+    try {
+      const likes = await Likes.find({ post: postId }).populate('user', 'username')
+
+      res.json(likes)
+    } catch (error) {
+      console.error(error)
       res.status(500).json({ error: 'Internal Server Error' })
     }
   }
