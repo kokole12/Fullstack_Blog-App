@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-center justify-center bg-black">
+    <div>
         Home view
     </div>
 </template>
@@ -8,6 +8,6 @@
 
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>
