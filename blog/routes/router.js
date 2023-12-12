@@ -38,4 +38,6 @@ router.delete('/api/v1/blog/posts/:id', authenticate, PostController.deletePost)
 
 router.put('/api/v1/blog/posts/:id', authenticate, PostController.updatePost)
 
+router.post('/api/v1/blog/posts/:postId/comment', authenticate, PostController.commentPost)
+
 export default router

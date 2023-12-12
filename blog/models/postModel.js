@@ -18,19 +18,26 @@ const postSchema = new mongoose.Schema({
     ref: 'slugModel',
     require: true
   },
+  comments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Commnent'
+  }],
 
   tags: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'tagModel'
   }],
+
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'userModel'
   },
+
   date: {
     type: Date,
     default: Date.now()
   },
+
   imageUrl: {
     type: String
   }

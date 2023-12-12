@@ -2,6 +2,7 @@ import PostModel from '../models/postModel.js'
 import slugModel from '../models/slugModel.js'
 import tagModel from '../models/tagModel.js'
 import slugify from 'slugify'
+import Comment from '../models/commentsModel.js'
 
 export default class PostController {
   static async getPosts (req, res) {
@@ -122,5 +123,33 @@ export default class PostController {
 
   static async search (req, res) {
 
+  }
+
+  static async commentPost (req, res) {
+    const { text } = req.body
+    const postId = req.params.postId
+
+    try {
+      const post = await PostModel.findOne({ _id: postId })
+
+      if (!post) {
+        res.status(404).json({ error: 'No post found' })
+        return
+      }
+
+      const newComment = new Comment({
+        text,
+        post: postId,
+        author: req.user.userId
+      })
+
+      const savedComment = await newComment.save()
+
+      post.comments.push(savedComment._id)
+      res.status(201).json(savedComment)
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({ error: 'Internal Server Error' })
+    }
   }
 }
