@@ -1,27 +1,23 @@
 <template>
-    <header class="flex items-center justify-around h-full p-3 bg-slate-400">
-        <div>
-            <a href="" class="logo">My Blog</a>
-            <input type="text" class="p-2 mx-3 border-solid border-black rounded-3xl" placeholder="search">
+    <nav class="relative container mx-auto p-6 h-full">
+        <div class="flex items-center justify-between">
+            <div class="pt-2 space-x-6">
+                <router-link :to="{name: 'home'}" class="logo text-2xl font-bold">My Blog</router-link>
+                <input type="text" class=" border-solid rounded-xl p-1" placeholder="search">
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <router-link :to="{name: 'home'}" class="hover:border-gray-300">Home</router-link>
+                <a href="">Stories</a>
+                <a href="">My stories</a>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="" class="p-3 pt-2">write</a>
+                <a href="" class="p-3 px-6 pt-2 bg-gray-300 rounded-full">login</a>
+                <a href="" class="p-3 px-6 pt-2 bg-blue-500 text-white rounded-full hover:bg-blue-300">Sign in</a>
+            </div>
         </div>
-        <div>
-            <ul class="flex items-center justify-around">
-                <li>
-                    <a href="" class="mx-2">Home</a>
-                </li>
-                <li>
-                    <a href="" class="mx-2">Stories</a>
-                </li><li>
-                    <a href="" class="mx-2">My stories</a>
-                </li>
-            </ul>
-        </div>
-        <div>
-            <a href="" class="mx-2">Write</a>
-            <a href="" class="mx-2">login</a>
-            <a href="" class="mx-2">Sign up</a>
-        </div>
-    </header>
+    </nav>
+    <hr/>
 </template>
 
 <script setup>
