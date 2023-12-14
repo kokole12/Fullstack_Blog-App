@@ -25,21 +25,13 @@
     <section id="features">
         <div class="container flex flex-col space-y-12 mx-auto mt-10 md:space-y-0 md:flex-row">
             <div>
-                <h2 class="max-w-md text-4xl font-bold text-center md:text-left">
+                <h2 class="max-w-md text-4xl font-bold text-center">
                     What is different about my blog
                 </h2>
 
                 <p class="max-w-sm text-center text-gray-400 md:text-left mt-3">
                     My blog provides all the features you need to manage your blog posts and engagements
                 </p>
-            </div>
-
-            <div class="flex flex-col space-y-8 md:w-1/2">
-                <div class="flex flex-col space-y-3 md:space-y-0 md:space-x-6 md:flex-row">
-                    <div class="rounded-l-full md:bg-gray-200">
-                        <div class="flex item-center space-x-2"></div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
