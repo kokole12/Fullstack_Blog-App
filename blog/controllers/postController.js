@@ -123,7 +123,19 @@ export default class PostController {
   }
 
   static async search (req, res) {
+    const { query } = req.query
 
+    try {
+      const regex = new RegExp(query, 'i')
+
+      const matchingPost = await PostModel.find({
+        $or: [{ title: regex }, { content: regex }]
+      })
+      res.status(200).json(matchingPost)
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ error: 'Internal server error' })
+    }
   }
 
   static async commentPost (req, res) {

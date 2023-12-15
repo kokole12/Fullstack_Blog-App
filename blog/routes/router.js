@@ -31,7 +31,7 @@ router.post('/api/v1/blog/login', loginValidation, validate, AuthController.logi
 
 router.get('/api/v1/verify/:token', AuthController.verifyAccount)
 
-router.get('/api/v1/blog/posts', authenticate, PostController.getPosts)
+router.get('/api/v1/blog/posts', PostController.getPosts)
 
 router.post('/api/v1/blog/posts', authenticate, upload.single('image'), postCreateValidation, validate, PostController.createPost)
 
@@ -50,5 +50,7 @@ router.get('/api/v1/blog/posts/:postId/likes', authenticate, PostController.getP
 router.delete('/api/v1/blog/posts/:postId/likes', authenticate, PostController.dislikePost)
 
 router.put('/api/v1/blog/users/profile', authenticate, upload.single('image'), UserController.updateUserProfile)
+
+router.get('/api/v1/blog/posts/search', PostController.search)
 
 export default router
